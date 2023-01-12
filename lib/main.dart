@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +36,7 @@ class MyAppState extends ChangeNotifier {
     current = WordPair.random();
     notifyListeners();
   }
-
   var favorites = <WordPair>[];
-
   void toggleFavorite() {
     if (favorites.contains(current)) {
       favorites.remove(current);
@@ -47,10 +47,28 @@ class MyAppState extends ChangeNotifier {
     print(favorites);
   }
 }
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-class MyHomePage extends StatelessWidget {
+class _MyHomePageState extends State<MyHomePage> {
+  var selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+  Widget page;
+  switch (selectedIndex) {
+    case 0:
+    page = GeneratorPage();
+    break;
+    case 1:
+    page = FavoritesPage();
+    break;
+    default:
+    throw UnimplementedError('ERROR')
+  }
+
     return Scaffold(
       body: Row(
         children: [
@@ -87,6 +105,7 @@ class GeneratorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
+
 
     IconData icon;
     if (appState.favorites.contains(pair)) {
@@ -125,7 +144,12 @@ class GeneratorPage extends StatelessWidget {
   }
 }
 
-class BigCard extends StatelessWidget {
+class FavoritesPage extends StatelessWidget{
+ @override
+ Widget build(BuildContext context) {
+  return Center(child: Text('Blank page'));
+ }
+}
   const BigCard({
     Key? key,
     required this.pair,
